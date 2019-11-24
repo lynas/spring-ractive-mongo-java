@@ -1,11 +1,15 @@
 package com.lynas.reactivespringjava;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.reactivestreams.Publisher;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.mapping.event.LoggingEventListener;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
@@ -33,6 +37,19 @@ public class ReactiveSpringJavaApplication {
                     .subscribe(log::info);
 
         };
+    }
+
+}
+
+
+@RestController
+@RequiredArgsConstructor
+class CustomerController {
+    private final ReactiveCustomerRepository repository;
+
+    @GetMapping("/customers")
+    public Publisher<Customer> getAll() {
+        return repository.findAll();
     }
 
 }
