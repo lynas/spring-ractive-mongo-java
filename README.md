@@ -1,9 +1,16 @@
 # Getting Started
 
-### DB Setup
+### How to create mongodb with docker
+
 ```
-sudo docker run -d -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password -e MONGODB_USERNAME=root 
-    \ -e MONGODB_PASSWORD=password -p 27017:27017 mongo
+sudo docker run -d -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password -p 27017:27017 mongo
+```
+
+### Create db inside docker mongo container
+```
+sudo docker exec -i -t containerId /bin/bash
+mongo -u root -p
+use tempdb
 ```
 
 ### application.yml
