@@ -3,6 +3,7 @@ spring:
     mongodb:
       host: 192.168.226.128
       port: 27017
-      database: admin
+      database: testdb
       username: root
       password: password
+      authentication-database: admin
