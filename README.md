@@ -13,16 +13,33 @@ mongo -u root -p
 use tempdb
 ```
 
-### application.yml
+### How to run
+
+- From project root run following command
+- `./gradlew bootRun`
+
+### CURL command to get all customer
 
 ```
-spring:
-  data:
-    mongodb:
-      host: 192.168.226.128
-      port: 27017
-      database: admin
-      username: root
-      password: password
+curl -X GET \
+  http://localhost:8080/customers \
+  -H 'Accept: */*' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Host: localhost:8080' \
+  -H 'cache-control: no-cache'
+```
 
+### CURL command to add new customer
+
+```
+curl -X POST \
+  http://localhost:8080/customers \
+  -H 'Accept: */*' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \
+  -H 'Host: localhost:8080' \
+  -d '{
+	"firstName" : "Mad",
+	"lastName" : "Max"
+}'
 ```
