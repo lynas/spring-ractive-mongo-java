@@ -33,8 +33,8 @@ public class ReactiveSpringJavaApplication {
     @Bean
     CommandLineRunner init(ReactiveCustomerRepository repository) {
         return args -> {
-            Mono<Customer> save1 = repository.save(new Customer("1", "Sazzad", "Islam"));
-            Mono<Customer> save2 = repository.save(new Customer("2", "Suraiya", "Lopa"));
+            Mono<Customer> save1 = repository.save(new Customer("Mad", "Max"));
+            Mono<Customer> save2 = repository.save(new Customer("Don", "Neto"));
             repository.deleteAll()
                     .thenMany(save1)
                     .thenMany(save2)
