@@ -1,26 +1,44 @@
 package com.lynas.reactivespringjava;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.reactivestreams.Publisher;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/customers")
+@Log4j2
 public class CustomerController {
-    private final ReactiveCustomerRepository repository;
+    private final ReactiveCustomerRepository customerRepository;
+    private final ReactiveOrderRepository orderRepository;
 
-    @GetMapping("/customers")
+    @GetMapping
     public Publisher<Customer> getAll() {
-        return repository.findAll();
+        return customerRepository.findAll();
     }
 
-    @PostMapping("/customers")
+    @PostMapping
     public Publisher<Customer> addNew(@RequestBody Customer customer) {
         Customer saveCustomer = new Customer(customer.firstName, customer.lastName);
-        return repository.save(saveCustomer);
+        return customerRepository.save(saveCustomer);
+    }
+
+    @GetMapping("/orders/{customerId}")
+    public String getAllCustomerProducts(@PathVariable String customerId) {
+
+
+        demo(Mono.just(customerId));
+
+        return "Ok";
+
+    }
+
+    private void demo(Mono<String> customerId){
+        customerRepository.findById(customerId)
+                .thenMany(orderRepository.findByCustomerId(customerId))
+                .subscribe(log::info);
     }
 
 
