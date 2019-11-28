@@ -26,20 +26,16 @@ public class CustomerController {
     }
 
     @GetMapping("/orders/{customerId}")
-    public String getAllCustomerProducts(@PathVariable String customerId) {
-
-
-        demo(Mono.just(customerId));
-
-        return "Ok";
-
+    public Publisher<String> getAllCustomerProducts(@PathVariable String customerId) {
+/*
+        Mono<Customer> customerMono = customerRepository.findById(customerId);
+        Mono<String> customerIdMono = customerMono.map(u -> u.id);
+        Flux<Order> orderFlux = orderRepository.findByCustomerId(customerIdMono);
+        Flux<String> orderItemFlux = orderFlux.map(order -> order.orderItemName);
+*/
+        return customerRepository.findById(customerId)
+                .flatMapMany(u -> orderRepository.findByCustomerId(Mono.just(u.id)))
+                .map(order -> order.orderItemName);
     }
-
-    private void demo(Mono<String> customerId){
-        customerRepository.findById(customerId)
-                .thenMany(orderRepository.findByCustomerId(customerId))
-                .subscribe(log::info);
-    }
-
 
 }

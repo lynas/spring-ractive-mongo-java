@@ -26,13 +26,16 @@ public class ReactiveSpringJavaApplication {
         return args -> {
             Mono<Customer> customer1 = repository.save(new Customer("1","Mad", "Max"));
             Mono<Customer> customer2 = repository.save(new Customer("2","Don", "Neto"));
-            Mono<Order> order1 = orderRepository.save(new Order("1", "Book1"));
+            Mono<Order> order1 = orderRepository.save(new Order("1", "Book"));
             Mono<Order> order2 =orderRepository.save(new Order("1", "Pen"));
+            Mono<Order> order3 = orderRepository.save(new Order("2", "Phone"));
             repository.deleteAll()
+                    .thenMany(orderRepository.deleteAll())
                     .thenMany(customer1)
                     .thenMany(customer2)
                     .thenMany(order1)
                     .thenMany(order2)
+                    .thenMany(order3)
                     .thenMany(repository.findAll())
                     .subscribe(log::info);
         };
