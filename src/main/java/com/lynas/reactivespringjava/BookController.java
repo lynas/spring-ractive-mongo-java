@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class BookController {
         Flux<Book> bookFlux = bookRepository.findByAuthorId(authorIdMono);
         return bookFlux;*/
 
-        return authorRepository.findByName(Mono.just(authorName))
+        return authorRepository.findByName(authorName)
                 .flatMapMany(author -> bookRepository.findByAuthorId(author.id));
     }
 
