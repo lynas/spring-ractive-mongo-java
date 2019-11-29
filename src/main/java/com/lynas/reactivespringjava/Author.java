@@ -11,17 +11,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class Customer {
+public class Author {
 
     @Id
     public String id;
+    public String name;
 
-    public String firstName;
-    public String lastName;
-
-    public Customer(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Author(String name) {
+        this.name = name;
     }
 }
 

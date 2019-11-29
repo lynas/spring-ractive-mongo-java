@@ -22,21 +22,22 @@ public class ReactiveSpringJavaApplication {
     }
 
     @Bean
-    CommandLineRunner init(ReactiveCustomerRepository repository, ReactiveOrderRepository orderRepository) {
+    CommandLineRunner init(ReactiveBookRepository bookRepository, ReactiveAuthorRepository authorRepository) {
         return args -> {
-            Mono<Customer> customer1 = repository.save(new Customer("1","Mad", "Max"));
-            Mono<Customer> customer2 = repository.save(new Customer("2","Don", "Neto"));
-            Mono<Order> order1 = orderRepository.save(new Order("1", "Book"));
-            Mono<Order> order2 =orderRepository.save(new Order("1", "Pen"));
-            Mono<Order> order3 = orderRepository.save(new Order("2", "Phone"));
-            repository.deleteAll()
-                    .thenMany(orderRepository.deleteAll())
-                    .thenMany(customer1)
-                    .thenMany(customer2)
-                    .thenMany(order1)
-                    .thenMany(order2)
-                    .thenMany(order3)
-                    .thenMany(repository.findAll())
+            Mono<Author> author1 = authorRepository.save(new Author("1", "Max"));
+            Mono<Author> author2 = authorRepository.save(new Author("2", "Don"));
+            Mono<Book> book1 = bookRepository.save(new Book("Java", "1"));
+            Mono<Book> book2 = bookRepository.save(new Book("Spring", "1"));
+            Mono<Book> book3 = bookRepository.save(new Book("Swift", "2"));
+            authorRepository.deleteAll()
+                    .thenMany(bookRepository.deleteAll())
+                    .thenMany(author1)
+                    .thenMany(author2)
+                    .thenMany(book1)
+                    .thenMany(book2)
+                    .thenMany(book3)
+                    .thenMany(bookRepository.findAll())
+                    .thenMany(authorRepository.findAll())
                     .subscribe(log::info);
         };
     }
