@@ -11,17 +11,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class Order {
+public class Book {
 
     @Id
     public String id;
+    public String name;
+    public String authorId;
 
-    public String customerId;
-    public String orderItemName;
-
-    public Order(String customerId, String orderItemName) {
-        this.customerId = customerId;
-        this.orderItemName = orderItemName;
+    public Book(String name, String authorId) {
+        this.name = name;
+        this.authorId = authorId;
     }
 }
 
